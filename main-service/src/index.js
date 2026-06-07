@@ -1,4 +1,5 @@
 const express = require('express')
+const database = require('./database/database')
 const { createTables } = require('./database/seed')
 
 const app = express()
@@ -11,6 +12,7 @@ app.get('/', (req, res) => {
 })
 
 const start = async () => {
+    await database.waitForConnection()
     await createTables()
     app.listen(PORT, () => {
         console.log(`Main Service rodando na porta ${PORT}`)
