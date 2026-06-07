@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: drinkflow-db
+    environment:
+      POSTGRES_USER: drinkflow
+      POSTGRES_PASSWORD: drinkflow123
+      POSTGRES_DB: drinkflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  main-service:
+    build: ./main-service
+    container_name: drinkflow-main
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: drinkflow
+      DB_PASSWORD: drinkflow123
+      DB_NAME: drinkflow
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+  report-service:
+    build: ./report-service
+    container_name: drinkflow-report
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: drinkflow
+      DB_PASSWORD: drinkflow123
+      DB_NAME: drinkflow
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:
