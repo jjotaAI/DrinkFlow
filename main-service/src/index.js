@@ -1,6 +1,9 @@
 const express = require('express')
 const database = require('./database/database')
 const { createTables } = require('./database/seed')
+const clienteRoutes = require('./routes/clienteRoutes')
+const vendedorRoutes = require('./routes/vendedorRoutes')
+const produtoRoutes = require('./routes/produtoRoutes')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -10,6 +13,10 @@ app.use(express.json())
 app.get('/', (req, res) => {
     res.json({ message: 'DrinkFlow - Main Service rodando!' })
 })
+
+app.use('/clientes', clienteRoutes)
+app.use('/vendedores', vendedorRoutes)
+app.use('/produtos', produtoRoutes)
 
 const start = async () => {
     await database.waitForConnection()
