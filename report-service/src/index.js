@@ -1,14 +1,24 @@
 require('dotenv').config()
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3001;
+const express = require('express')
+const database = require('./database/database')
+const relatorioRoutes = require('./routes/relatorioRoutes')
 
-app.use(express.json());
+const app = express()
+const PORT = process.env.PORT || 3001
 
-app.get('/', (req,res) => {
-    res.json({message: 'DrinkFlow - serviço de relatório rodando com sucesso!'});
-});
+app.use(express.json())
 
-app.listen(PORT, () => {
-    console.log(`Serviço de relatório rodando na porta ${PORT}`);
-});
+app.get('/', (req, res) => {
+    res.json({ message: 'DrinkFlow - Report Service rodando!' })
+})
+
+app.use('/relatorios', relatorioRoutes)
+
+const start = async () => {
+    await database.waitForConnection()
+    app.listen(PORT, () => {
+        console.log(`Report Service rodando na porta ${PORT}`)
+    })
+}
+
+start()
