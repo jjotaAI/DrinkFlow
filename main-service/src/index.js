@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const database = require('./database/database')
 const { createTables } = require('./database/seed')

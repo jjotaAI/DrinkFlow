@@ -6,7 +6,8 @@ COPY package*.json ./
 
 RUN npm install --omit=dev
 
-COPY . .
+COPY src/ ./src/
+COPY .env .env
 
 EXPOSE 3000
 
